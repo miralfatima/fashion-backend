@@ -8,6 +8,8 @@ router.get("/register", function (req, res, next) {
 });
 //post rg
 router.post("/register", async function (req, res, next) {
+	const { error } = validate(req.body);
+	if (error) return res.status(400).send(error.details[0].message);
 	let user = new User(req.body);
 	await user.save();
 	res.redirect("/");
