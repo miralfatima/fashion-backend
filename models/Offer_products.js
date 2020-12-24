@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-const Joi = require("joi");
+const Joi = require("@hapi/joi");
 
 var OfferSchema = mongoose.Schema({
 	name: String,
@@ -7,4 +7,16 @@ var OfferSchema = mongoose.Schema({
 });
 const OfferProduct = mongoose.model("OferProduct", OfferSchema);
 
-module.exports = OfferProduct;
+
+function validateOffer(data) {
+	const schema = Joi.object({
+		name: Joi.string().min(3).max(20).required(),
+		price: Joi.string().required(),
+
+	});
+	return schema.validate(data, { abortEarly: false });
+  }
+  module.exports.OfferProduct = OfferProduct;
+  module.exports.validate = validateOffer;
+
+

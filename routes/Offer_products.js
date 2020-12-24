@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var checkSessionAuth = require("../middlewares/checkSessionAuth");
-var OfferProduct = require("../models/Offer_products");
+var {OfferProduct,validate} = require("../models/Offer_products");
 
 /* GET users listing. */
 router.get("/", async function (req, res, next) {
@@ -18,6 +18,8 @@ router.get("/add", async function (req, res, next) {
 });
 
 router.post("/add", async function (req, res, next) {
+	const { error } = validate(req.body);
+	if (error) return res.status(400).send(error.details[0].message);
 	let offers = new OfferProduct(req.body);
 	await offers.save();
 	res.redirect("/offers");

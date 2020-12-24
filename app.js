@@ -8,6 +8,7 @@ var offerRouter = require("./routes/Offer_products");
 var catRouter = require("./routes/categories");
 var cartRouter = require("./routes/cart");
 var usersRouter = require("./routes/users");
+var orderrouter = require("./routes/order")
 var session = require("express-session");
 var sessionAuth = require("./middlewares/sessionAuth");
 
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", cartRouter);
 app.use("/", usersRouter);
 app.use("/categorys", catRouter);
+app.use("/orders", orderrouter);
 app.use("/offers", offerRouter);
 
 // catch 404 and forward to error handler

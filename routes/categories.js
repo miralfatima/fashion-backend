@@ -1,12 +1,11 @@
 var express = require("express");
 var router = express.Router();
 var checkSessionAuth = require("../middlewares/checkSessionAuth");
-var Category = require("../models/categories");
+var {Category,validate} = require("../models/categories");
 //console.log(Category);
 /* GET home page. */
 router.get("/", async function (req, res, next) {
 	let categorys = await Category.find();
-	console.log(req.session.user);
 	res.render("categorys/list", { title: "Products In Our Store", categorys });
 });
 
@@ -15,6 +14,8 @@ router.get("/add", checkSessionAuth, async function (req, res, next) {
 });
 
 router.post("/add", async function (req, res, next) {
+	const { error } = validate(req.body);
+	if (error) return res.status(400).send(error.details[0].message);
 	let category = new Category(req.body);
 	await category.save();
 	res.redirect("/categorys");
@@ -31,6 +32,8 @@ router.get("/edit/:id", async function (req, res, next) {
 });
 router.post("/edit/:id", async function (req, res, next) {
 	let category = await Category.findById(req.params.id);
+	const { error } = validate(req.body);
+	if (error) return res.status(400).send(error.details[0].message);
 
 	category.type = req.body.type;
 	category.brand = req.body.brand;
