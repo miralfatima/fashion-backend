@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var { User } = require("../models/user");
+var { User,validate } = require("../models/user");
 
 /* GET users listing. */
 router.get("/register", function (req, res, next) {
